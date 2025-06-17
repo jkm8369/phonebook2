@@ -12,7 +12,19 @@ public class PersonVO {
 	public PersonVO() {
 		super();
 	}
+	
+	public PersonVO(int personId) {
+		super();
+		this.personId = personId;
+	}
 
+	public PersonVO(String name, String hp, String company) {
+		super();
+		this.name = name;
+		this.hp = hp;
+		this.company = company;
+	}
+	
 	public PersonVO(int personId, String name, String hp, String company) {
 		super();
 		this.personId = personId;
@@ -20,6 +32,7 @@ public class PersonVO {
 		this.hp = hp;
 		this.company = company;
 	}
+
 
 	//메소드gs
 	public int getPersonId() {
