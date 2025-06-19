@@ -135,7 +135,7 @@ public class PhonebookDAO {
 			System.out.println(count + "건이 저장되었습니다.");
 			
 		} catch (SQLException e) {
-			
+			System.out.println("error: " + e);
 		}
 		
 		this.close();
@@ -174,6 +174,80 @@ public class PhonebookDAO {
 		return count;
 	}
 	
+	public int personUpdate(PersonVO personVO) {
+		int count = -1;
+		
+		this.connect();
+		
+		
+		
+		try {
+			
+			String query = "";
+			query += " update person ";
+			query += " set name = ?, ";
+			query += " hp = ?, ";
+			query += " company = ? ";
+			query += " where person_id = ? ";
+			
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, personVO.getName());
+			pstmt.setString(2, personVO.getHp());
+			pstmt.setString(3, personVO.getCompany());
+			pstmt.setInt(4, personVO.getPersonId());
+			
+			count = pstmt.executeUpdate();
+			
+			System.out.println(count + "건이 수정되었습니다.");
+			
+		} catch (SQLException e) {
+			System.out.println("error: " + e);
+		}
+		
+		
+		this.close();
+		return count;
+	}
+	
+	public PersonVO personSelectOne(int no) {
+		PersonVO personVO = null;
+		
+		this.connect();
+		
+		try {
+			
+			String query = "";
+			query += " select person_id, ";
+			query += " 		  name, ";
+			query += " 		  hp, ";
+			query += " 		  company ";
+			query += " from person ";
+			query += " where person_id = ? ";
+			
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, no);
+			
+			rs = pstmt.executeQuery();
+			
+			rs.next();
+			
+			int id = rs.getInt("person_id");
+			String name = rs.getString("name");
+			String hp = rs.getString("hp");
+			String company = rs.getString("company");
+			
+			personVO = new PersonVO(id, name, hp, company);
+			
+				
+			
+		} catch (SQLException e) {
+			System.out.println("error: " + e);
+		}
+		
+		this.close();
+		
+		return personVO;
+	}
 	
 }	
 	

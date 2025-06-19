@@ -3,7 +3,6 @@ package com.javaex.controller;
 import java.io.IOException;
 import java.util.List;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -11,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.javaex.dao.PhonebookDAO;
+import com.javaex.util.Webutil;
 import com.javaex.vo.PersonVO;
 
 
@@ -51,8 +51,13 @@ public class PhonebookController extends HttpServlet {
 			
 			//2)list.jsp에 request 객체와 response 객체를 보낸다
 			//*포워드
+			
+			Webutil.forward(request, response, "/WEB_INF/list.jsp");
+			
+			/*
 			RequestDispatcher rd = request.getRequestDispatcher("/list.jsp");
 			rd.forward(request, response);
+			*/
 			
 			//응답문서 바디 추가한다
 		
@@ -65,8 +70,9 @@ public class PhonebookController extends HttpServlet {
 			
 			//2)jsp에게 화면을 그리게 한다(포워드)
 			//writeForm.jsp 포워드한다
-			RequestDispatcher rd = request.getRequestDispatcher("/writeForm.jsp");
-			rd.forward(request, response);
+			Webutil.forward(request, response, "/WEB_INF/writeForm.jsp");
+			
+			
 			
 		} else if("write".equals(action)) {  //등록 업무
 			
@@ -80,14 +86,16 @@ public class PhonebookController extends HttpServlet {
 			System.out.println(personVO);
 			
 			
+			
 			//DAO를 통해서 저장시키기
 			PhonebookDAO phonebookDAO = new PhonebookDAO();
 			phonebookDAO.personInsert(personVO);
 			
 			// 리다이렉트 list 요청해주세요
-			// http:localhost:8080/phonebook2/pbc?action=list
+			// http://localhost:8080/phonebook2/pbc?action=list
 			
-			//response.sendRedirect("http://localhost:8080/phonebook2/pbc?action=list");			
+			//response.sendRedirect("http://localhost:8080/phonebook2/pbc?action=list");		
+			Webutil.redirect(request, response, "http://localhost:8080/phonebook2/pbc?action=list");
 			
 			/*
 			//응답 (리스트) 하기 ------------------------------------------
@@ -117,6 +125,44 @@ public class PhonebookController extends HttpServlet {
 			
 			//리다이렉트 action=list
 			//response.sendRedirect("http://localhost:8080/phonebook2/pbc?action=list");
+			Webutil.redirect(request, response, "http://localhost:8080/phonebook2/pbc?action=list");
+			
+		} else if("uform".equals(action)) {
+			System.out.println("수정폼");
+			
+			int no = Integer.parseInt(request.getParameter("no"));
+			PhonebookDAO phonebookDAO = new PhonebookDAO();
+			PersonVO person = phonebookDAO.personSelectOne(no);
+			
+			request.setAttribute("person", person);
+			
+			
+			Webutil.forward(request, response, "/WEB_INF/updateForm.jsp");
+			/*
+			RequestDispatcher rd = request.getRequestDispatcher("/updateForm.jsp");
+			rd.forward(request, response);
+			*/
+			
+		} else if("update".equals(action)) {
+			
+			System.out.println("수정");
+			
+			//파라미터 4개 꺼내기
+			String name = request.getParameter("name");
+			String hp = request.getParameter("hp");
+			String company = request.getParameter("company");
+			int personId = Integer.parseInt(request.getParameter("person_id"));
+			
+			PersonVO personVO = new PersonVO(name, hp, company, personId);
+			System.out.println(personVO);
+			
+			//DAO를 통해 수정시키기
+			PhonebookDAO phonebookDAO = new PhonebookDAO();
+			phonebookDAO.personUpdate(personVO);
+			
+			Webutil.redirect(request, response, "http://localhost:8080/phonebook2/pbc?action=list");
+			//response.sendRedirect("http://localhost:8080/phonebook2/pbc?action=list");
+			 
 		}
 		
 	}
