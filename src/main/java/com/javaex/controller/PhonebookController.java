@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.javaex.dao.PhonebookDAO;
-import com.javaex.util.Webutil;
+import com.javaex.util.WebUtil;
 import com.javaex.vo.PersonVO;
 
 
@@ -52,7 +52,7 @@ public class PhonebookController extends HttpServlet {
 			//2)list.jsp에 request 객체와 response 객체를 보낸다
 			//*포워드
 			
-			Webutil.forward(request, response, "/WEB_INF/list.jsp");
+			WebUtil.forward(request, response, "/WEB-INF/list.jsp");
 			
 			/*
 			RequestDispatcher rd = request.getRequestDispatcher("/list.jsp");
@@ -70,7 +70,7 @@ public class PhonebookController extends HttpServlet {
 			
 			//2)jsp에게 화면을 그리게 한다(포워드)
 			//writeForm.jsp 포워드한다
-			Webutil.forward(request, response, "/WEB_INF/writeForm.jsp");
+			WebUtil.forward(request, response, "/WEB-INF/writeForm.jsp");
 			
 			
 			
@@ -95,7 +95,7 @@ public class PhonebookController extends HttpServlet {
 			// http://localhost:8080/phonebook2/pbc?action=list
 			
 			//response.sendRedirect("http://localhost:8080/phonebook2/pbc?action=list");		
-			Webutil.redirect(request, response, "http://localhost:8080/phonebook2/pbc?action=list");
+			WebUtil.redirect(request, response, "http://localhost:8080/phonebook2/pbc?action=list");
 			
 			/*
 			//응답 (리스트) 하기 ------------------------------------------
@@ -125,7 +125,7 @@ public class PhonebookController extends HttpServlet {
 			
 			//리다이렉트 action=list
 			//response.sendRedirect("http://localhost:8080/phonebook2/pbc?action=list");
-			Webutil.redirect(request, response, "http://localhost:8080/phonebook2/pbc?action=list");
+			WebUtil.redirect(request, response, "http://localhost:8080/phonebook2/pbc?action=list");
 			
 		} else if("uform".equals(action)) {
 			System.out.println("수정폼");
@@ -137,7 +137,7 @@ public class PhonebookController extends HttpServlet {
 			request.setAttribute("person", person);
 			
 			
-			Webutil.forward(request, response, "/WEB_INF/updateForm.jsp");
+			WebUtil.forward(request, response, "/WEB_INF/updateForm.jsp");
 			/*
 			RequestDispatcher rd = request.getRequestDispatcher("/updateForm.jsp");
 			rd.forward(request, response);
@@ -160,7 +160,7 @@ public class PhonebookController extends HttpServlet {
 			PhonebookDAO phonebookDAO = new PhonebookDAO();
 			phonebookDAO.personUpdate(personVO);
 			
-			Webutil.redirect(request, response, "http://localhost:8080/phonebook2/pbc?action=list");
+			WebUtil.redirect(request, response, "http://localhost:8080/phonebook2/pbc?action=list");
 			//response.sendRedirect("http://localhost:8080/phonebook2/pbc?action=list");
 			 
 		}
